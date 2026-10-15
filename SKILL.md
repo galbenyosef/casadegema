@@ -9,7 +9,7 @@ Everything lives in one file, `index.html` (~3,500 lines): CSS and a few DOM ele
 
 ## Mental model
 
-- **Stage:** a fixed logical stage `W = 1200`, `H = 950`. All game coordinates are logical. Each frame, drawing uses `ctx.setTransform(B, 0, 0, B, OX, OY)`, where `B` is the scale in device pixels and `OX`/`OY` the offsets (`resize()` computes them; small screens crop to a focus rectangle).
+- **Stage:** a fixed logical stage `W = 1200`, `H = 950`. All game coordinates are logical. Each frame, drawing uses `ctx.setTransform(B, 0, 0, B, OX, OY)`, where `B` is the scale in device pixels and `OX`/`OY` the offsets (`resize()` computes them; small laptop windows crop to `CROP`, and on phones the camera sets them, see Touch).
   - Logical → CSS pixels: `(OX + B * x) / dpr`
   - CSS pixels → logical: `(css * dpr - OX) / B`
   - `setMouse(e)` already converts pointer events into `mouse.x/y` in logical units.
@@ -152,11 +152,11 @@ To recreate Casa de Gemas from scratch in one shot, give a coding agent this pro
 ```text
 Build a single self-contained index.html (pure JavaScript + Canvas 2D, no libraries, no
 images, no build step) called "Casa de Gemas" — a little garden of hidden gems, made as a
-Happy Daughter's Day gift.
+birthday gift for a daughter and shared as a link (mostly opened on phones).
 
 SCENE
 - Soft watercolor illustration on warm cream paper. Fixed 1200×950 logical stage scaled to
-  fit the window (letterboxed; on small screens crop the empty margins). Pre-render static
+  fit the window (letterboxed on laptops; phones get a zoomed camera, see TOUCH). Pre-render static
   art into offscreen layers using layered low-alpha deformed polygons plus paper grain.
 - A whitewashed Spanish house: a tower with a terracotta roof, blue shutters and wall pots,
   a main house with a tiled roof, a chimney, an arched wooden door with blue-tile surround
@@ -176,7 +176,11 @@ GROWTH
 - The garden starts bare. Pick up the watering can (click), click-and-hold to pour — water
   drops, splashes and a pouring sound. Watering the bed grows a bougainvillea tree
   (procedural segments with stable spring physics; grabbing a branch bends its parent
-  chain). Watering each pot grows a small plant. Every tree uses a different petal color.
+  chain). Watering each pot grows a small plant. Every tree uses a different petal color,
+  bright and saturated so it pops against the cream walls: hot pink for the main tree, then
+  vivid purple, sunny gold, coral and sky blue (blush and ivory stay soft). Each petal has a
+  deeper rim in its own color and a small white sheen; a soft mint wash sits behind the
+  main tree instead of pink.
   Put the can back by clicking its spot or pressing Esc; it also returns by itself when
   everything is planted.
 - Petals: shaking a branch hard detaches petals that flutter side to side as they fall
@@ -213,8 +217,8 @@ OLI THE OWL
 
 WALL-POT VISITORS
 - Every season one of the seven blue wall pots on the tower hides a little visitor (a
-  different pot each season); finding it is that season's fifth gem. Tapping a pot only
-  puffs a few petals — the visitor needs an action. Spring: water the pots with the can,
+  different pot each season); finding it is that season's fifth gem. Tapping a pot mostly
+  just puffs a few petals — the visitor needs an action. Spring: water the pots with the can,
   a nest of chicks; they burst into chirps when they appear, then peep in small bursts
   every few seconds with their beaks opening in time (`Music.chirp`). The nest stays in
   its pot for the rest of the year (`nook.nest`, drawn by `drawNest`, snow on its rim in
@@ -224,7 +228,8 @@ WALL-POT VISITORS
   7 s into winter, or after 60 s regardless) `nest.fly` is set and they take off 0.8 s
   apart with a chirp each, small yellow birds flapping up and away to the upper left
   (`fledgling`). Oli says they are off somewhere warm; the empty nest keeps its snow. Summer: water the pots or rest the butterfly
-  cursor still on one (holding the can is fine), a ladybug crawls onto the rim. Autumn: press and wiggle a pot, a field mouse nibbling an acorn.
+  cursor still on one (holding the can is fine), a ladybug crawls onto the rim. Autumn: a little tail curls over the rim of the mouse's pot
+  and that pot rustles now and then; tap it (or press and wiggle it) for a field mouse nibbling an acorn.
   Winter: tap or brush the pots with the held twig (any part of it) to knock the snow off,
   a robin. Every pot the twig touches sheds a little snow.
 
@@ -235,7 +240,7 @@ LANTERNS (all year)
   early-morning tint, both = day. No sun, no "good morning" text.
 
 SPRING GEMS (5)
-1. Music: tap the speaker on the table. Nothing else starts music.
+1. Music: tap the speaker on the bench. Nothing else starts music.
 2. Shake: shake a branch.
 3. Pots: grow every plant.
 4. Butterfly: tap the palette, pick a new petal color (panel closes itself after picking).
@@ -293,7 +298,7 @@ WINTER GEMS (5)
    twinkle, brighter at night.
 4. Name: pick up the chalk from the easel's ledge, tap the board, type a name (DOM input
    over the board), Enter. The name is written on the board in chalk. ?name= in the URL
-   pre-fills it; signing it again still counts.
+   pre-fills it, and then this gem lights up by itself a few seconds into winter.
 5. Robin: the wall-pot visitor.
 
 HINTS
@@ -303,10 +308,12 @@ HINTS
 - A cute pink alarm clock stands on the ground at the bottom-right of the house: a gold
   wedge and a single hand sweep down to zero, with a small seconds number; it rings and
   wobbles when the hint arrives. Tapping it rings the hint early.
-- A cute floppy-eared puppy peeks from behind the casa every 25–40 s (over the chimney, over
+- Coco, a cute puppy with perky ears (folded tips that wiggle the whole time he is out
+  and flick as he pops up), peeks from behind the casa every 25–40 s (over the chimney, over
   the roof ridge, around the tower, or around the far corner above the clock), stays about
-  5 s, then ducks back. The first time, Oli whispers that someone is peeking. Tapping him
-  gives a soft little woof, he pants happily, and he sniffs out every gem still hidden this season, one every ~1.3 s, doing each gem's own action
+  5 s, then ducks back. He says a soft "woof woof" each time he pops up
+  (even before the music is on). The first time, Oli whispers that someone is peeking. Tapping him
+  woofs again, he pants happily, and he sniffs out every gem still hidden this season, one every ~1.3 s, doing each gem's own action
   where possible, so the season can finish.
 
 ENDING
@@ -327,11 +334,18 @@ TITLE
   there for the whole game. On short screens (phones in landscape) it is smaller and sits
   in the top-right corner, clear of the house.
 
-SOUND (Web Audio, all generated, silent until the speaker is tapped)
+SOUND (Web Audio, all generated, silent until the speaker is tapped, except the puppy's woof)
 - Gentle Andalusian cadence Am–G–F–E: soft pads, plucked notes, chimes, convolution
   reverb. Petal-flutter notes only while your hand is shaking a branch (short notes that
   fade within ~0.6 s of letting go — never loop), water pour and rain, pop, owl hoots,
-  lantern chimes. Unlock audio on touchend for iOS.
+  lantern chimes. Build the audio engine silently on the first tap and resume it on touchend so
+  iOS allows sound.
+
+BIRTHDAY CARD
+- ?name=Mia&from=Dad opens on a small birthday card for Mia (cake, "Happy Birthday, Mia",
+  signed by from) before the garden. With no name, the card offers a form that builds that
+  link and shares it (the share sheet on phones) or copies it. "just play the garden" or ×
+  closes it; clicks and keys on the card never reach the garden.
 
 TOUCH
 - Works with fingers: taps snap to the nearest interactive thing within fingertip reach

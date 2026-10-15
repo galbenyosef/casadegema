@@ -375,8 +375,9 @@ function drawBg(g) {
   blob(g, 930, 230, 120, '#dde9f0', 12, .05);
   blob(g, 540, 150, 115, '#f3a6ad', 16, .04);
   blob(g, 460, 105, 70, '#f6bcc1', 12, .045);
-  blob(g, 1010, 650, 95, '#f3a0aa', 16, .05);
-  blob(g, 985, 770, 70, '#f7c3c8', 12, .05);
+  // soft mint behind the main tree so its blossoms stand out
+  blob(g, 1010, 650, 95, '#bfdcc4', 16, .05);
+  blob(g, 985, 770, 70, '#d2e8d4', 12, .05);
   blob(g, 150, 520, 90, '#ecdcc6', 12, .05);
   blob(g, 1060, 420, 60, '#efe0cc', 10, .05);
 
@@ -678,18 +679,24 @@ function makeSprite(dark, light, leaf) {
   if (leaf) { g.moveTo(0, -24); g.quadraticCurveTo(17, -4, 0, 24); g.quadraticCurveTo(-17, -4, 0, -24); }
   else { g.moveTo(0, 22); g.bezierCurveTo(-26, 6, -20, -24, 0, -14); g.bezierCurveTo(20, -24, 26, 6, 0, 22); }
   g.fill();
+  if (!leaf) {
+    // a faint rim in the petal's own deep color and a soft sheen keep blossoms crisp against the wall
+    g.globalAlpha = .4; g.strokeStyle = dark; g.lineWidth = 1.4; g.stroke();
+    g.globalAlpha = .45; g.fillStyle = '#fff';
+    g.beginPath(); g.ellipse(-7, -6, 4.5, 2.6, -.6, 0, TAU); g.fill();
+  }
   g.globalAlpha = .3; g.strokeStyle = dark; g.lineWidth = 1.5;
   g.beginPath(); g.moveTo(0, 20); g.lineTo(0, -10); g.stroke();
   return c;
 }
 const PALETTES = {
-  magenta: [['#d8203f', '#f7738a'], ['#e62e52', '#ff8aa0'], ['#c9173a', '#f0506e'], ['#ef4166', '#ffb0bf'], ['#b8122f', '#e8445f'], ['#f25a7a', '#ffc2cd']],
-  violet: [['#6a1f8a', '#b36bd6'], ['#7d2fa0', '#c98ae6'], ['#5a1878', '#a45cc8'], ['#8e3fb3', '#dcaaf2'], ['#6f2a94', '#b77fdc'], ['#9b55c2', '#e6c3f7']],
-  coral: [['#d9531e', '#ffa66b'], ['#e8672a', '#ffbd85'], ['#c9441a', '#f58a55'], ['#f07a35', '#ffcf9e'], ['#d95f3a', '#ffab8a'], ['#ee8a3c', '#ffd4a3']],
-  gold: [['#d4960f', '#ffe07a'], ['#e0a81e', '#ffeb99'], ['#c98a0b', '#f5cf5a'], ['#eab52a', '#fff2b3'], ['#d99e1a', '#ffe28a'], ['#f0c040', '#fff6c8']],
+  magenta: [['#d10f5c', '#ff7eb6'], ['#ec1f74', '#ff9fcb'], ['#b80d52', '#ff5a9f'], ['#ff2d86', '#ffc4df'], ['#c7105a', '#ff6eaa'], ['#ff4b98', '#ffd6ea']],
+  violet: [['#7b1fd6', '#cf96ff'], ['#9233f0', '#e0b6ff'], ['#6a16bd', '#bd80ff'], ['#a64dff', '#ecd6ff'], ['#7e2ae0', '#d3a2ff'], ['#b366ff', '#f2e2ff']],
+  coral: [['#f2400f', '#ffa475'], ['#ff5a24', '#ffbf96'], ['#df360c', '#ff8a5c'], ['#ff6e33', '#ffd2b3'], ['#f24d2e', '#ffad94'], ['#ff7f38', '#ffdabb']],
+  gold: [['#eba000', '#ffe455'], ['#ffb300', '#fff08a'], ['#de9200', '#ffd633'], ['#ffbf14', '#fff5b5'], ['#f0a808', '#ffe66e'], ['#ffc72e', '#fff8c9']],
   blush: [['#e07a98', '#ffd0de'], ['#ea8fab', '#ffe0ea'], ['#d86c8c', '#ffc2d4'], ['#f0a0b8', '#fff0f5'], ['#dc7fa0', '#ffd8e6'], ['#f5b3c8', '#fff5f8']],
   ivory: [['#d6c6b0', '#fffdf8'], ['#e0d2c2', '#ffffff'], ['#d8c0c4', '#fff5f7'], ['#e3d8c6', '#fffaf0'], ['#cbbba8', '#fbf6ee'], ['#e4ccd2', '#fff8fa']],
-  sky: [['#3f73c0', '#a8cdf5'], ['#4f86d4', '#bcd9f8'], ['#355fa8', '#8fb8ea'], ['#6a9be0', '#d2e6fb'], ['#4470b8', '#9fc2ee'], ['#7aa8e8', '#e0eefc']],
+  sky: [['#1f6fe0', '#9ccdff'], ['#2f83f0', '#b6dcff'], ['#1a5cc8', '#86bdfa'], ['#4a95f5', '#d0e8ff'], ['#2468d6', '#9cc8fb'], ['#5aa2f7', '#dff0ff']],
 };
 const PAL_NAMES = Object.keys(PALETTES);
 const SPRITES = {};

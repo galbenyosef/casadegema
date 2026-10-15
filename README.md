@@ -2,9 +2,9 @@
 
 *A little garden of hidden gems.*
 
-Casa de Gemas is a tiny interactive watercolor world made as a Happy Daughter's Day gift: a whitewashed Spanish house, a bare courtyard, a watering can, and a year of hidden gems. Oli the owl lives on the tower roof and narrates as the garden moves through spring, summer, autumn and winter. Find every gem and, on the last snowy day, a message rises from the chimney — with *her* name in it.
+Casa de Gemas is a tiny interactive watercolor world made as a birthday gift for a daughter: a whitewashed Spanish house, a bare courtyard, a watering can, and a year of hidden gems. Oli the owl lives on the tower roof and narrates as the garden moves through spring, summer, autumn and winter. Find every gem and, on the last snowy day, "Happy Birthday" rises from the chimney with *her* name in it, along with a stream of balloons. Send someone the link with their name in it and the game opens on a little birthday card for them.
 
-**Play it:** https://deepujain.github.io/casadegema/ · the original spring-only gift: https://1xaispark.com/games/casa-de-gemas
+**Play it:** https://deepujain.github.io/casadegema/ · https://1xaispark.com/games/casa-de-gemas. Both links have the same full game, all four seasons, and it plays on laptops and phones.
 
 ![Casa de Gemas](preview.png)
 
@@ -14,15 +14,15 @@ It is one self-contained `index.html` — hand-drawn Canvas 2D art, spring physi
 
 ## How to play
 
-The garden starts bare. Pick up the watering can and water the tree bed — a bougainvillea grows. Then explore. Each season has its own gems; each one pops up where you found it and flies to the counter in the top-left. Find them all and Oli says goodbye to the season, and the next season arrives on its own element — a rising sun for summer, a gust of wind full of leaves for autumn, a snowfall for winter — changing the trees and flowers as it passes over them. A full year takes about 10–15 minutes.
+The garden starts bare. Pick up the watering can and water the tree bed — a hot-pink bougainvillea grows, and every pot you water grows its own little tree in a different bright color. Then explore. Each season has its own gems; each one pops up where you found it and flies to the counter in the top-left. Find them all and Oli says goodbye to the season, and the next season arrives on its own element — a rising sun for summer, a gust of wind full of leaves for autumn, a snowfall for winter — changing the trees and flowers as it passes over them. A full year takes about 10–15 minutes.
 
-Every season has five gems. One of them is always a little visitor hiding in one of the blue flower pots on the tower wall — a different pot each season. Tapping a pot does nothing but puff a few petals; each season's visitor only comes out for that season's action.
+Every season has five gems. One of them is always a little visitor hiding in one of the blue flower pots on the tower wall — a different pot each season. Tapping a pot mostly just puffs a few petals; each season's visitor comes out for that season's action (in autumn, a tap on the right pot is enough).
 
 ### 🌸 Spring (5 gems)
 
 | Gem | How to find it |
 | --- | --- |
-| 🔊 Music | Tap the little pink speaker on the table. |
+| 🔊 Music | Tap the little pink speaker on the bench. |
 | 🌸 Shake | Grab a branch and shake it — every petal falls on its own. |
 | 🌱 Pots | Water every pot so all the plants grow. |
 | 🦋 Butterfly | Tap the paint palette on the ground and pick a new petal color. Your butterfly cursor changes color too. |
@@ -61,14 +61,14 @@ Winter opens on a long night: the lanterns are out and their fireflies rest in t
 | ⛄ Snowman | Tap the three snowy mounds to roll snowballs; once he is stacked his carrot nose pops on by itself. |
 | 🔥 Hearth | Tap the cold chimney. Smoke rises and the windows glow. |
 | ✨ Lights | Tap the balcony railing to string up fairy lights. |
-| 🖍️ Name | Pick up the chalk from the easel's ledge, tap the board, and write her name (with `?name=` it's already there; sign it once more). |
+| 🖍️ Name | Pick up the chalk from the easel's ledge, tap the board, and write her name. With `?name=` in the link her name is already on the board, and this gem lights up by itself a few seconds into winter. |
 | 🐦 Robin | Pick up the twig and tap or brush the snowy wall pots with it (any part of the twig works). Each pot sheds a little snow; one of them has a robin. |
 
 Find the last winter gem and "Happy Birthday, *name*" comes out of the chimney letter by letter, each one floating up to its place, with hearts, while a stream of colorful balloons squeezes out of the chimney and floats away into the night sky; then it gently fades.
 
 **Stuck?** Tap Oli for a hint. A feather also roams the garden: when the little alarm clock at the corner of the house runs down (a random 18–48 seconds), it rings and the feather flies to your next gem. Tap the clock to ring it early.
 
-**Really stuck?** Every half a minute or so a perky-eared puppy peeks out from behind the casa: over the chimney, over the roof, around the tower, or around the far corner by the clock. He says woof woof as he pops up, ears wiggling. Tap him before he ducks back and he sniffs out every gem still hidden this season, one by one (freeing the kite, opening the jar, building the snowman and so on).
+**Really stuck?** Every half a minute or so Coco, a perky-eared puppy, peeks out from behind the casa: over the chimney, over the roof, around the tower, or around the far corner by the clock. He says woof woof as he pops up, ears wiggling. Tap him before he ducks back and he sniffs out every gem still hidden this season, one by one (freeing the kite, opening the jar, building the snowman and so on).
 
 **Keys:** `Esc` puts down whatever you're holding · `M` toggles music · `R` starts the year over from spring.
 
@@ -99,12 +99,12 @@ To host it, drop `index.html` anywhere that serves static files (GitHub Pages, N
 
 ## How it's built
 
-- **Rendering:** Canvas 2D on a fixed 1200×950 logical stage scaled to the window. The house, sky and ground are pre-rendered once into offscreen layers using a watercolor "wash" technique (layered, low-alpha, randomly deformed polygons + paper grain). Small screens crop the empty margins.
-- **Tree:** procedurally grown segments with spring physics; grabbing a branch bends its whole parent chain. Petals are attached along segments and detach when shaken hard, then flutter down and settle on the ground.
+- **Rendering:** Canvas 2D on a fixed 1200×950 logical stage scaled to the window. The house, sky and ground are pre-rendered once into offscreen layers using a watercolor "wash" technique (layered, low-alpha, randomly deformed polygons + paper grain). On phones a camera zooms in on the garden, and the layers are painted once for the whole garden so dragging and pinching never repaint them.
+- **Tree:** procedurally grown segments with spring physics; grabbing a branch bends its whole parent chain. Petals are attached along segments and detach when shaken hard, then flutter down and settle on the ground. Each petal is a small sprite with a deeper rim and a soft white sheen, so the bright blossoms stand out against the cream walls.
 - **Day cycle:** multiply-tinted overlays that ease between day, dusk, night and dawn based on how many lanterns are off.
 - **Seasons:** a `CHAPTERS` array (spring, summer, autumn, winter) holds each season's gems, Oli's lines, a color grade and weather. Trees follow the year: mostly blossoms with a few fresh leaves in spring, full green leaves in summer, turning leaves in autumn, and bare branches in winter where snow slowly builds up as it falls. Winter adds snow on the roofs and courtyard, and autumn a rain cloud.
 - **Oli:** a speech bubble narrates each season, reacts to discoveries, and gives a hint when tapped.
-- **Music:** fully generative Web Audio — an Andalusian cadence (Am–G–F–E) with pads, plucks, chimes and a convolution reverb, plus petal-flutter, pouring water and rain, pops, owl hoots and lantern chimes. Silent until you tap the speaker.
+- **Music:** fully generative Web Audio — an Andalusian cadence (Am–G–F–E) with pads, plucks, chimes and a convolution reverb, plus petal-flutter, pouring water and rain, pops, owl hoots and lantern chimes. Silent until you tap the speaker, except for the puppy's woof.
 - **Gems:** the current season's gem list drives the counter, the fly-to-counter effect, Oli's hints and the feather.
 
 ## Made with Claude
