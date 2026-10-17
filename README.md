@@ -2,9 +2,13 @@
 
 *A little garden of hidden gems.*
 
-Casa de Gemas is a tiny interactive watercolor world made as a birthday gift for a daughter: a whitewashed Spanish house, a bare courtyard, a watering can, and a year of hidden gems. Oli the owl lives on the tower roof and narrates as the garden moves through spring, summer, autumn and winter. Find every gem and, on the last snowy day, "Happy Birthday" rises from the chimney with *her* name in it, along with a stream of balloons. Send someone the link with their name in it and the game opens on a little birthday card for them.
+Casa de Gemas is a tiny interactive watercolor world made as a birthday gift for a daughter: a whitewashed Spanish house, a bare courtyard, a watering can, and a year of hidden gems. Oli the owl lives on the tower roof and narrates as the garden moves through spring, summer, autumn and winter. Find every gem and, on the last snowy day, "Happy Birthday" rises from the chimney with *her* name in it, along with a stream of balloons. Put a name in the link and the garden is already written for them.
 
-**Play it:** https://deepujain.github.io/casadegema/ · https://1xaispark.com/games/casa-de-gemas. Both links have the same full game, all four seasons, and it plays on laptops and phones.
+**Play it on a laptop or desktop:** https://deepujain.github.io/casadegema/ · https://1xaispark.com/games/casa-de-gemas
+
+**Play it on a phone:** https://deepujain.github.io/casadegema/mobile/ · https://1xaispark.com/games/casa-de-gemas/mobile
+
+Both versions are the same game with all four seasons and the same gems; the phone version is played with taps only (see [Phones](#phones)).
 
 ![Casa de Gemas](preview.png)
 
@@ -72,17 +76,31 @@ Find the last winter gem and "Happy Birthday, *name*" comes out of the chimney l
 
 **Keys:** `Esc` puts down whatever you're holding · `M` toggles music · `R` starts the year over from spring.
 
-**Phones:** the garden opens zoomed in to a finger-friendly size, in portrait or landscape. Drag to look around and pinch to zoom; Oli's hints and the finale glide the view to where you need to look. Taps snap to the nearest thing you can interact with. The butterfly sits just above your fingertip, and anything you carry rides above it too: the watering can pours right above your finger, and the twig, rake and chalk stay in sight. Carry a tool to the edge of the screen and the view follows. To put a tool back, tap its spot. The gems and how you find them are the same as on a laptop.
+### Phones
+
+Share the `/mobile/` link with people who'll open it on a phone. Everything in it is a tap:
+
+- **Shake:** tap a branch and it shakes itself (that also frees the kite).
+- **Water:** tap the can to pick it up, then tap where to water; it pours there for a couple of seconds.
+- **Rake:** tap the rake, then tap the leaves; it sweeps up every leaf near the tap. Tap anything above the courtyard to put it down and do that thing instead.
+- **Twig:** tap the twig, then tap the balloon to pop it or a snowy pot to knock its snow off.
+- **Put a tool back:** tap its spot.
+
+The garden opens zoomed in to a finger-friendly size, in portrait or landscape. Drag to look around and pinch to zoom; Oli's hints and the finale glide the view to where you need to look, and Oli's tips talk in taps. The butterfly and whatever you carry sit just above your fingertip, so your finger never hides them.
+
+The laptop link also works on a phone, with the same view, but there you drag to shake, pour and rake.
 
 ### Personalize it
 
 Add a name to the link and it's already written on the easel and in the final message:
 
 ```
-https://deepujain.github.io/casadegema/?name=Shanaya&from=Dad
+https://deepujain.github.io/casadegema/?name=Shanaya
 ```
 
-With a name, the game opens on a little birthday card for her (signed by `from`, if you add it). Without a name, the card offers to make that link for someone and share or copy it. "Just play the garden" skips it.
+For a phone, use `https://deepujain.github.io/casadegema/mobile/?name=Shanaya`.
+
+Birthday cards live separately in [Spark Greetings](https://1xaispark.com/greetings) makes embossed cards for every age, and cards for kids, teens and grown-ups link here so they can play.
 
 Add `&season=summer`, `autumn` or `winter` to start later in the year (everything before it is already done).
 
@@ -95,7 +113,9 @@ python3 -m http.server 8000
 # then open http://localhost:8000
 ```
 
-To host it, drop `index.html` anywhere that serves static files (GitHub Pages, Netlify, S3, a Next.js `public/` folder, …).
+To host it, drop `index.html` (and `mobile/index.html` for the phone version) anywhere that serves static files (GitHub Pages, Netlify, S3, a Next.js `public/` folder, …).
+
+The phone version is generated from `index.html`; after changing the game, rebuild it with `node mobile/build.mjs`.
 
 ## How it's built
 

@@ -126,10 +126,28 @@ Puppy: `pup` peeks from one of `PUP_SPOTS` (chimney top, roof ridge, tower left 
 
 **Finger vs. working point.** `finger` is the spot under the finger and `mouse` is the point the game uses. Without a tool they are the same. With one, `liftVec()` offsets the grip so the tool is not under the finger: the can is shifted so its tilted spout pours about 36 px above the fingertip, and the twig, rake and chalk are raised 26–40 px. Pickups and put-downs (`canAt`, `twigAt`, `rakeAt`, `chalkAt`) test `finger`, so you tap the tool's home to put it back. After a pickup, `relift()` reapplies the offset. On touch the butterfly perches about 34 px above `mouse`; gems still use `mouse`.
 
+## Phone version (`mobile/`)
+
+`mobile/index.html` is generated, never edited by hand: `node mobile/build.mjs` reads `index.html` and applies a list of exact text swaps. If an anchor no longer matches, the build stops and names it; update the swap. Always rebuild after changing the game, and copy both files to Spark (`public/games/casa-de-gemas/` and its `mobile/`; `next.config.mjs` rewrites `/games/casa-de-gemas/mobile`).
+
+The swaps:
+- `cam.on` is always true and the touch tip always shows.
+- Oli's drag wording becomes taps.
+- Tap actions (`tapAct`, run by `updateTapAct` in `frame`) replace drags with a short scripted motion that keeps going after the finger lifts:
+  - `'shake'`: a tapped branch is grabbed and wiggled for 1.6 s, adding to `grabTravel` and calling `found('shake')`.
+  - `'pour'`: with the can held, it pours at the tap for 2.6 s.
+  - `'rake'`: with the rake held, a tap on the stones runs it for 1.8 s at the tapped spot itself (no lift). The tine head chases the unswept leaves within 120 units one by one, then scratches back and forth.
+- `release()` waits while a tap action runs, a new tap ends the one playing, and moves don't steer it.
+- With the twig held, a tap near the grown balloon calls `popBalloon()`.
+- A held rake is put down by tapping right on it with no unswept leaf within 24 units (the leaves gather there). A tap more than 40 units above the stones also puts it down and then acts as a normal tap, so the cloud, umbrella and lamps work while holding it.
+- While the birthday message shows, the `#hint` title fades out and Oli's bubble stays below `CHIMNEY.y - 10`. A tall phone screen otherwise puts all three in the same top corner.
+
+Test it with a full tap-only playthrough of all 20 gems in a `390×844` `isMobile, hasTouch` context, sending taps through CDP `Input.dispatchTouchEvent`.
+
 ## Customizing
 
 - **Message:** `MSG` for the first line; the name comes from the easel or `?name=` (`girlName`, max 16 chars).
-- **Birthday card:** the last `<script>` builds the `#bday` overlay. With `?name=` (and optional `&from=`) it greets her; without one it offers a form that makes that link and shares it (`navigator.share` on phones) or copies it. It stops its own key and pointer events from reaching the garden. In winter a name that is already set lights the name gem shortly after Oli's intro (`nameGemAt`).
+- **Name gem:** in winter a name that is already set lights the name gem shortly after Oli's intro (`nameGemAt`). Birthday cards are not part of the game; they live in Spark Greetings, which links here with `?name=`.
 - **Oli's lines:** `intro`/`outro` in `CHAPTERS`, `tip`/`say` on each gem.
 - **Petal colors:** `PALETTES` (each tree gets a distinct one; `recolor(tree, pal)` swaps sprites via `seasonSprite`). Seasonal sprite sets (`SPRITES.autumn`, `SPRITES.snow`) are kept out of `PALETTES` so they never show up in the palette picker.
 - **Title:** the `#hint` element and `<title>`.
@@ -341,12 +359,6 @@ SOUND (Web Audio, all generated, silent until the speaker is tapped, except the 
   lantern chimes. Build the audio engine silently on the first tap and resume it on touchend so
   iOS allows sound.
 
-BIRTHDAY CARD
-- ?name=Mia&from=Dad opens on a small birthday card for Mia (cake, "Happy Birthday, Mia",
-  signed by from) before the garden. With no name, the card offers a form that builds that
-  link and shares it (the share sheet on phones) or copies it. "just play the garden" or ×
-  closes it; clicks and keys on the card never reach the garden.
-
 TOUCH
 - Works with fingers: taps snap to the nearest interactive thing within fingertip reach
   (including every seasonal object), bigger branch/balloon hit areas, no double-tap zoom,
@@ -363,7 +375,7 @@ KEYS: Esc drops the held tool, M toggles music, R starts the year over from spri
 
 ## House rules
 
-- One file, no dependencies, no external images. Google Fonts (Great Vibes, Caveat) are optional; fall back to system script fonts.
+- One file, no dependencies, no external images. Google Fonts (Great Vibes for the title, Caveat for the chalk name) are optional; fall back to system script fonts.
 - Keep interactions intentional — nothing important should trigger from a mere hover.
 - Discovery over instruction: no on-screen instructions beyond the title and Oli's short lines; let Oli, the feather and the clock guide.
 - Gentle over flashy: soft easing, warm colors, quiet sounds.
